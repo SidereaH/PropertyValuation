@@ -1,7 +1,5 @@
 package com.propertyvaluation.main.models;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

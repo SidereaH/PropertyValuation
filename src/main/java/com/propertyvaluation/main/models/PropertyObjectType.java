@@ -1,6 +1,5 @@
 package com.propertyvaluation.main.models;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import jakarta.persistence.Column;
@@ -8,9 +7,6 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -19,19 +15,23 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @Data
+@Table(name = "property_object_types")
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PRIVATE, force = true)
-@Table(name = "employees")
-public class Employees {
+public class PropertyObjectType {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Id
-  @Column(name = "employee_id")
-  private Long employeeId;
-  @Column(name = "hire_date")
-  private LocalDate hireDate;
+  @Column(name = "property_object_type_id")
 
-  @ManyToOne
-  @JoinColumn(name = "position_id")
-  private Position position;
+  private Long propertyTypeId;
+
+  @Column(name = "property_type_name")
+  private String propertyTypeName;
+
+  @Column
+  private String description;
+
+  @Column(name = "created_at")
+  private LocalDateTime createdAt;
 
 }

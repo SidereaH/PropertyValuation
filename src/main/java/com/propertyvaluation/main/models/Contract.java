@@ -1,15 +1,12 @@
 package com.propertyvaluation.main.models;
 
 import java.time.LocalDate;
-import java.time.Year;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
@@ -36,8 +33,7 @@ public class Contract {
 
   @ManyToOne
   @JoinColumn(name = "employee_id")
-  private Employees employee;
-
+  private Employee employee;
   @Column(name = "contract_date")
   private LocalDate contractDate;
 
@@ -49,7 +45,7 @@ public class Contract {
   private Status status;
 
   public enum Status {
-    DRAFT("Черновик"), INPROCESS("Начато"), COMPLETED("Выполнено");
+    DRAFT("Черновик"), INPROCESS("Начато"), COMPLETED("Выполнено"), CANCELLED("Отменено");
 
     private final String description;
 
