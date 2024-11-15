@@ -1,0 +1,34 @@
+spring:
+    application:
+        name: property-valuation
+
+    datasource:
+        url: jdbc:postgresql://127.0.0.1:5433/property_valuation_db
+        username: "postgres"
+        password: "postgres"
+        driver-class-name: org.postgresql.Driver
+
+    jpa:
+        database-platform: org.hibernate.dialect.PostgreSQLDialect
+        show-sql:  true
+        hibernate:
+            ddl-auto: update
+    # properties:
+      #            hibernate:
+     #           format_sql: true
+        
+  #sql:
+    #     init:
+      #   mode: always
+      #     schema-locations: "classpath:schema.sql"
+      #     data-locations: "classpath:data.sql"
+logging:
+    level:
+        org:
+            hibernate:
+                SQL: debug
+                type: 
+                    descriptor:
+                        sql:
+                            BasicBinder: trace
+
