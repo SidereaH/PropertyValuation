@@ -13,8 +13,11 @@ spring:
         show-sql:  true
         hibernate:
             ddl-auto: update
+    data:
+        rest:
+            base-path: /data-api
     # properties:
-      #            hibernate:
+    #            hibernate:
      #           format_sql: true
         
   #sql:
