@@ -1,6 +1,6 @@
 package com.propertyvaluation.main.models;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import java.time.LocalDate;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -27,4 +27,6 @@ public class Position {
   @Column(name = "position_name")
   private String positionName;
 
+  @Column(name = "position_created_at")
+  private LocalDate createdAt = LocalDate.now();
 }

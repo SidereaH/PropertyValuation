@@ -1,10 +1,8 @@
 package com.propertyvaluation.main.models;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 import jakarta.persistence.Column;
-import jakarta.persistence.ColumnResult;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -13,7 +11,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public abstract class People {
-  private Long employeeId;
+
   @Column(name = "last_name")
   private String lastName;
   @Column(name = "first_name")
@@ -27,5 +25,5 @@ public abstract class People {
   @Column(name = "email")
   private String email;
   @Column(name = "created_at")
-  private LocalDateTime createdAt;
+  private LocalDate createdAt = LocalDate.now();
 }

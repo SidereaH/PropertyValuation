@@ -1,6 +1,6 @@
 package com.propertyvaluation.main.models;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -30,6 +30,6 @@ public class AppraisalType {
   private String description;
 
   @Column(name = "created_at")
-  private LocalDateTime createdAt;
+  private LocalDate createdAt = LocalDate.now();
 
 }

@@ -1,7 +1,14 @@
 package com.propertyvaluation.main.models;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -24,11 +31,11 @@ public class Appraisal {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long appraisalId;
-  @OneToOne
+  @ManyToOne
   @JoinColumn(name = "contract_id")
   private Contract contract;
 
-  @OneToOne
+  @ManyToOne
   @JoinColumn(name = "object_id")
   private PropertyObject object;
   @ManyToOne

@@ -2,8 +2,6 @@ package com.propertyvaluation.main.dal;
 
 import com.propertyvaluation.main.models.*;
 
-import java.util.List;
-
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
@@ -20,41 +18,26 @@ public class DataAccessLayer {
   }
 
   Session session = null;
-  /*
-   * public List<Position> getAllPositions() {
-   * List<Position> positions = null;
-   * 
-   * try (Session session = sessionFactory.openSession()) {
-   * session.beginTransaction();
-   * positions = session.createQuery("FROM Position", Position.class).list();
-   * session.getTransaction().commit();
-   * } catch (Exception e) {
-   * e.printStackTrace();
-   * }
-   * 
-   * return positions;
-   * }
-   * 
-   * public Position getPosition(Long id) {
-   * Position position = null;
-   * 
-   * try (Session session = sessionFactory.openSession()) {
-   * session.beginTransaction();
-   * position = session.get(Position.class, id);
-   * session.getTransaction().commit();
-   * } catch (Exception e) {
-   * e.printStackTrace();
-   * }
-   * return position;
-   * }
-   */
-  // Appraisal CRUD Operations
 
   public void createAppraisal(Appraisal appraisal) {
     Session session = sessionFactory.openSession();
     try {
       session.beginTransaction();
+
+      // Сначала сохраняем транзитные объекты
+      if (appraisal.getContract() != null && appraisal.getContract().getContractId() == null) {
+        session.persist(appraisal.getContract());
+      }
+      if (appraisal.getObject() != null && appraisal.getObject().getObjectId() == null) {
+        session.persist(appraisal.getObject());
+      }
+      if (appraisal.getAppraisalType() != null && appraisal.getAppraisalType().getAppraisalTypeId() == null) {
+        session.persist(appraisal.getAppraisalType());
+      }
+
+      // Затем сохраняем основной объект
       session.persist(appraisal);
+
       session.getTransaction().commit();
     } finally {
       if (session != null) {

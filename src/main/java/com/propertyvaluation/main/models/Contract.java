@@ -1,18 +1,19 @@
 package com.propertyvaluation.main.models;
 
 import java.time.LocalDate;
-import java.time.Year;
-
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
+
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-import lombok.AccessLevel;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -21,20 +22,21 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table(name = "contracts")
 @AllArgsConstructor
-@NoArgsConstructor(access = AccessLevel.PRIVATE, force = true)
+@NoArgsConstructor
 public class Contract {
   @Id
   @Column(name = "contract_id")
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long contractId;
 
   @Column(name = "contract_number")
   private String contractNumber;
 
-  @ManyToOne
+  @ManyToOne(cascade = CascadeType.ALL)
   @JoinColumn(name = "client_id")
   private Client client;
 
-  @ManyToOne
+  @ManyToOne(cascade = CascadeType.ALL)
   @JoinColumn(name = "employee_id")
   private Employees employee;
 
@@ -69,5 +71,5 @@ public class Contract {
   private boolean paymentStatus;
 
   @Column(name = "created_at")
-  private LocalDate createdAt;
+  private LocalDate createdAt = LocalDate.now();
 }

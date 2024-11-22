@@ -1,7 +1,6 @@
 package com.propertyvaluation.main.models;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.Year;
 
 import jakarta.persistence.Column;
@@ -11,7 +10,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -54,6 +52,6 @@ public class PropertyObject {
   private String additionalInfo;
 
   @Column(name = "created_at")
-  private LocalDateTime createdAt;
+  private LocalDate createdAt = LocalDate.now();
 
 }
