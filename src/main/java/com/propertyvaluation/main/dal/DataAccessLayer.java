@@ -46,6 +46,21 @@ public class DataAccessLayer {
     }
   }
 
+  public Appraisal patchAppraisal(Appraisal newAppraisal) {
+    Session session = sessionFactory.openSession();
+    try {
+      session.beginTransaction();
+      session.merge(newAppraisal);
+      session.getTransaction().commit();
+      return readAppraisal(newAppraisal.getAppraisalId());
+    } finally {
+      if (session != null) {
+        session.close();
+      }
+    }
+
+  }
+
   public Appraisal readAppraisal(Long id) {
     Session session = sessionFactory.openSession();
     try {
