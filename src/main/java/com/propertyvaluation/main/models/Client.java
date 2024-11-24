@@ -2,9 +2,7 @@ package com.propertyvaluation.main.models;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+
 import jakarta.persistence.Table;
 
 import lombok.AllArgsConstructor;
@@ -21,8 +19,6 @@ import lombok.Setter;
 @NoArgsConstructor
 
 public class Client extends People {
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "client_id")
-  private Long clientId;
+  @Column(name = "count_of_apprailsals")
+  private int countOfAppraisals;
 }

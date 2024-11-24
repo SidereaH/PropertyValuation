@@ -21,10 +21,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @Table(name = "employees")
 public class Employees extends People {
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Id
-  @Column(name = "employee_id")
-  private Long employeeId;
+
   @Column(name = "hire_date")
   private LocalDate hireDate;
 
