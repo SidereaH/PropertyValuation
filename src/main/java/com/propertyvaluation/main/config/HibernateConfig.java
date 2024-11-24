@@ -20,17 +20,6 @@ public class HibernateConfig {
   @Autowired
   private DataSource dataSource;
 
-  /**
-   * @Bean
-   *       public LocalSessionFactoryBean sessionFactory() {
-   *       LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
-   *       sessionFactory.setDataSource(dataSource);
-   *       sessionFactory.setPackagesToScan("com.zoo.zoo_spring.models");
-   *       sessionFactory.setHibernateProperties(hibernateProperties());
-   *       return sessionFactory;
-   *       }
-   **/
-
   private Properties hibernateProperties() {
     Properties properties = new Properties();
     properties.put("hibernate.dialect", "org.hibernate.dialect.PostgreSQLDialect");

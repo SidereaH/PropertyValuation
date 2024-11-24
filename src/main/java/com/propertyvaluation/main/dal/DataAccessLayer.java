@@ -4,7 +4,8 @@ import com.propertyvaluation.main.models.*;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-
+import org.hibernate.query.MutationQuery;
+import org.hibernate.query.Query;
 import org.springframework.stereotype.Component;
 
 import com.propertyvaluation.main.models.Employees;
@@ -166,6 +167,28 @@ public class DataAccessLayer {
         session.close();
       }
     }
+  }
+
+  public People getPeopleByMail(String mail) {
+    Session session = sessionFactory.openSession();
+    try {
+      Query<Employees> query = session.createNamedQuery("employees.findByEmailLike", Employees.class);
+      query.setParameter("email", "%" + mail + "%");
+      People people = query.uniqueResult();
+      if (people != null) {
+        return query.uniqueResult();
+      } else {
+        Query<Client> query2 = session.createNamedQuery("clients.findbyEmailLike", Client.class);
+        query.setParameter("email", "%" + mail + "%");
+        people = query2.uniqueResult();
+        return people;
+      }
+    } finally {
+      if (session != null) {
+        session.close();
+      }
+    }
+
   }
 
   public Client readClient(Long id) {
