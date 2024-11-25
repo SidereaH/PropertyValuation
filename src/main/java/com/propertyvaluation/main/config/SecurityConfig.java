@@ -3,6 +3,7 @@ package com.propertyvaluation.main.config;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -13,6 +14,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import com.propertyvaluation.main.dal.DataAccessLayer;
 import com.propertyvaluation.main.models.People;
 
+@EnableWebSecurity
 @Configuration
 public class SecurityConfig {
   @Bean
@@ -35,7 +37,7 @@ public class SecurityConfig {
   public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
     return http
         .authorizeHttpRequests(auth -> auth
-            .requestMatchers("/design", "/orders")
+            .requestMatchers("/api/clients", "/api/employees", "/api/positions", "")
             .access(new WebExpressionAuthorizationManager("hasRole('USER')"))
             .requestMatchers("/", "/**")
             .access(new WebExpressionAuthorizationManager("permitAll()")))

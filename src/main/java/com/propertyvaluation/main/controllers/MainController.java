@@ -20,7 +20,7 @@ import com.propertyvaluation.main.models.*;
 
 @RestController
 // @CrossOrigin("http://localhost:8080/")
-@RequestMapping("/unauthorized")
+@RequestMapping("/api")
 public class MainController {
   private final DataAccessLayer dataAccessLayer;
 
@@ -83,6 +83,12 @@ public class MainController {
     return ResponseEntity.ok(appraisalType);
   }
 
+  @PatchMapping("/appraisal-types")
+  public ResponseEntity<AppraisalType> patchAppraisalType(@RequestBody AppraisalType appraisalType) {
+    dataAccessLayer.updateAppraisalType(appraisalType);
+    return ResponseEntity.ok(appraisalType);
+  }
+
   @DeleteMapping("/appraisal-types/{id}")
   public ResponseEntity<Void> deleteAppraisalType(@PathVariable Long id) {
     dataAccessLayer.deleteAppraisalType(id);
@@ -106,6 +112,12 @@ public class MainController {
 
   @PutMapping("/clients")
   public ResponseEntity<Client> updateClient(@RequestBody Client client) {
+    dataAccessLayer.updateClient(client);
+    return ResponseEntity.ok(client);
+  }
+
+  @PatchMapping("/clients")
+  public ResponseEntity<Client> patchClient(@RequestBody Client client) {
     dataAccessLayer.updateClient(client);
     return ResponseEntity.ok(client);
   }
@@ -137,6 +149,12 @@ public class MainController {
     return ResponseEntity.ok(contract);
   }
 
+  @PatchMapping("/contracts")
+  public ResponseEntity<Contract> patchContract(@RequestBody Contract contract) {
+    dataAccessLayer.updateContract(contract);
+    return ResponseEntity.ok(contract);
+  }
+
   @DeleteMapping("/contracts/{id}")
   public ResponseEntity<Void> deleteContract(@PathVariable Long id) {
     dataAccessLayer.deleteContract(id);
@@ -160,6 +178,12 @@ public class MainController {
 
   @PutMapping("/employees")
   public ResponseEntity<Employees> updateEmployee(@RequestBody Employees employee) {
+    dataAccessLayer.updateEmployee(employee);
+    return ResponseEntity.ok(employee);
+  }
+
+  @PatchMapping("/employees")
+  public ResponseEntity<Employees> patchEmployee(@RequestBody Employees employee) {
     dataAccessLayer.updateEmployee(employee);
     return ResponseEntity.ok(employee);
   }
@@ -191,6 +215,12 @@ public class MainController {
     return ResponseEntity.ok(position);
   }
 
+  @PatchMapping("/positions")
+  public ResponseEntity<Position> patchPosition(@RequestBody Position position) {
+    dataAccessLayer.updatePosition(position);
+    return ResponseEntity.ok(position);
+  }
+
   @DeleteMapping("/positions/{id}")
   public ResponseEntity<Void> deletePosition(@PathVariable Long id) {
     dataAccessLayer.deletePosition(id);
@@ -218,6 +248,12 @@ public class MainController {
     return ResponseEntity.ok(propertyObject);
   }
 
+  @PatchMapping("/property-objects")
+  public ResponseEntity<PropertyObject> patchPropertyObject(@RequestBody PropertyObject propertyObject) {
+    dataAccessLayer.updatePropertyObject(propertyObject);
+    return ResponseEntity.ok(propertyObject);
+  }
+
   @DeleteMapping("/property-objects/{id}")
   public ResponseEntity<Void> deletePropertyObject(@PathVariable Long id) {
     dataAccessLayer.deletePropertyObject(id);
@@ -241,6 +277,12 @@ public class MainController {
 
   @PutMapping("/property-types")
   public ResponseEntity<PropertyTypes> updatePropertyType(@RequestBody PropertyTypes propertyType) {
+    dataAccessLayer.updatePropertyType(propertyType);
+    return ResponseEntity.ok(propertyType);
+  }
+
+  @PatchMapping("/property-types")
+  public ResponseEntity<PropertyTypes> patchPropertyType(@RequestBody PropertyTypes propertyType) {
     dataAccessLayer.updatePropertyType(propertyType);
     return ResponseEntity.ok(propertyType);
   }
