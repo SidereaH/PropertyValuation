@@ -4,7 +4,6 @@ import com.propertyvaluation.main.models.*;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.query.MutationQuery;
 import org.hibernate.query.Query;
 import org.springframework.stereotype.Component;
 
@@ -12,6 +11,7 @@ import com.propertyvaluation.main.models.Employees;
 
 @Component
 public class DataAccessLayer {
+
   private SessionFactory sessionFactory;
 
   public DataAccessLayer(SessionFactory sessionFactory) {
@@ -124,6 +124,39 @@ public class DataAccessLayer {
         session.close();
       }
     }
+  }
+
+  public String newUserToDatabase(Client user) {
+    session = sessionFactory.openSession();
+    session.beginTransaction();
+    String name = user.getUsername();
+
+    Query query = session
+        .createQuery("FROM Client where email = :username")
+        .setParameter("username", name);
+    Client userFrom = (Client) query.uniqueResult();
+
+    if (userFrom != null) {
+      return "Выберите другое имя";
+    }
+    session.persist(user);
+    session.getTransaction().commit();
+    session.close();
+    return "Pabeda)";
+  }
+
+  // username - email
+  public Client getUserFromDatabaseByUsername(String name) {
+    session = sessionFactory.openSession();
+    session.getTransaction().begin();
+    Query query = session
+        .createQuery("FROM Client where email = :username")
+        .setParameter("username", name);
+    Client userFrom = (Client) query.uniqueResult();
+    if (userFrom == null) {
+      return null;
+    }
+    return userFrom;
   }
 
   public void updateAppraisalType(AppraisalType appraisalType) {
