@@ -15,6 +15,7 @@ import jakarta.persistence.Table;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
+@Data
 @Table(name = "clients")
 public class Client extends People {
   @Column(name = "count_of_apprailsals")
@@ -27,8 +28,4 @@ public class Client extends People {
     this.countOfAppraisals = countOfAppraisals;
   }
 
-  @Override
-  public Collection<? extends GrantedAuthority> getAuthorities() {
-    return Arrays.asList(new SimpleGrantedAuthority("ROLE_USER"));
-  }
 }

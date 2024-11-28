@@ -12,10 +12,7 @@ spring:
         database-platform: org.hibernate.dialect.PostgreSQLDialect
         show-sql:  true
         hibernate:
-            ddl-auto: update
-    data:
-        rest:
-            base-path: /data-api
+            ddl-auto: create-drop
     # properties:
     #            hibernate:
      #           format_sql: true
@@ -34,4 +31,11 @@ logging:
                     descriptor:
                         sql:
                             BasicBinder: trace
+
+propval:
+    app:
+        secret: 3yYVzp5nVElAYg123uRpOMq+fzQfFQ6OgoxTKuUz9Fg=
+        lifetime: 60000
+server:
+    port: 8081
 

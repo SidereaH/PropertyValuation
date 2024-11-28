@@ -20,7 +20,7 @@ import com.propertyvaluation.main.models.*;
 
 @RestController
 // @CrossOrigin("http://localhost:8080/")
-@RequestMapping("/api")
+@RequestMapping("/auth")
 public class MainController {
   private final DataAccessLayer dataAccessLayer;
 

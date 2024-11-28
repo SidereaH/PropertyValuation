@@ -16,7 +16,7 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @Data
-@Table(name = "clents")
+@Table(name = "property_types")
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PRIVATE, force = true)
 public class PropertyTypes {

@@ -1,9 +1,21 @@
 package com.propertyvaluation.main.config;
 
+import com.propertyvaluation.main.models.Client;
+import com.propertyvaluation.main.security.TokenFilter;
+import com.propertyvaluation.main.service.ClientDetailsServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.context.annotation.Primary;
+import org.springframework.http.HttpStatus;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -13,41 +25,61 @@ import org.springframework.security.web.access.expression.WebExpressionAuthoriza
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import com.propertyvaluation.main.dal.DataAccessLayer;
 import com.propertyvaluation.main.models.People;
-
-@EnableWebSecurity
+import org.springframework.security.web.authentication.HttpStatusEntryPoint;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
 @Configuration
+@EnableWebSecurity
 public class SecurityConfig {
+  @Autowired
+  private ClientDetailsServiceImpl clientService;
+
+  @Autowired
+  @Lazy
+  private TokenFilter tokenFilter;
+
+  public SecurityConfig(){
+
+  }
+
+  @Bean
+  public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception{
+    return authenticationConfiguration.getAuthenticationManager();
+  }
+  @Bean
+  @Primary
+  public AuthenticationManagerBuilder configureAuthenticationManagerBuilder(AuthenticationManagerBuilder authenticationManagerBuilder) throws Exception{
+    authenticationManagerBuilder.userDetailsService(clientService).passwordEncoder(passwordEncoder());
+    return authenticationManagerBuilder;
+  }
+
+
+
   @Bean
   public PasswordEncoder passwordEncoder() {
     return new BCryptPasswordEncoder();
-
   }
 
-  @Bean
-  public UserDetailsService userDetailsService(DataAccessLayer dataAccessLayer) {
-    return email -> {
-      People user = dataAccessLayer.getPeopleByMail(email);
-      if (user != null)
-        return user;
-      throw new UsernameNotFoundException("User ‘" + email + "’ not found");
-    };
-  }
 
   @Bean
   public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-    return http
-        .authorizeHttpRequests(auth -> auth
-            .requestMatchers("/api/clients", "/api/employees", "/api/positions", "")
-            .access(new WebExpressionAuthorizationManager("hasRole('USER')"))
-            .requestMatchers("/", "/**")
-            .access(new WebExpressionAuthorizationManager("permitAll()")))
-        .formLogin(form -> form
-            .loginPage("/login"))
-        // .oauth2Login(auth -> auth
-        // .loginPage("/login"))
-        .logout(log -> log
-            .logoutSuccessUrl("/"))
-        .build();
+     http
+            .csrf(AbstractHttpConfigurer::disable)
+            .cors(httpSecurityCorsConfigurer ->
+                    httpSecurityCorsConfigurer.configurationSource(request ->
+                            new CorsConfiguration().applyPermitDefaultValues())
+            )
+            .exceptionHandling(exception -> exception
+                    .authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.CREATED)))
+            .sessionManagement(session -> session
+                    .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+            )
+          .authorizeHttpRequests(auth -> auth
+              .requestMatchers("/api/*", "/api/**", "/api")
+              .fullyAuthenticated()
+              .anyRequest().permitAll())
+             .addFilterBefore(tokenFilter, UsernamePasswordAuthenticationFilter.class);
+     return http.build();
   }
 
 }

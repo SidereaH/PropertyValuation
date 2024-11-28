@@ -17,32 +17,43 @@ import java.util.Properties;
 @EnableTransactionManagement
 public class HibernateConfig {
 
-  @Autowired
-  private DataSource dataSource;
+    @Autowired
+    private DataSource dataSource;
 
-  private Properties hibernateProperties() {
-    Properties properties = new Properties();
-    properties.put("hibernate.dialect", "org.hibernate.dialect.PostgreSQLDialect");
-    properties.put("hibernate.hbm2ddl.auto", "create-drop");
-    properties.put("hibernate.show_sql", "true");
-    return properties;
-  }
+    /**
+     * @Bean
+     *       public LocalSessionFactoryBean sessionFactory() {
+     *       LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
+     *       sessionFactory.setDataSource(dataSource);
+     *       sessionFactory.setPackagesToScan("com.zoo.zoo_spring.models");
+     *       sessionFactory.setHibernateProperties(hibernateProperties());
+     *       return sessionFactory;
+     *       }
+     **/
 
-  @Bean
-  @Autowired
-  public HibernateTransactionManager transactionManager(SessionFactory sessionFactory) {
-    HibernateTransactionManager txManager = new HibernateTransactionManager();
-    txManager.setSessionFactory(sessionFactory);
-    return txManager;
-  }
+    private Properties hibernateProperties() {
+        Properties properties = new Properties();
+        properties.put("hibernate.dialect", "org.hibernate.dialect.PostgreSQLDialect");
+        properties.put("hibernate.hbm2ddl.auto", "create-drop");
+        properties.put("hibernate.show_sql", "true");
+        return properties;
+    }
 
-  @Bean
-  public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
-    LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
-    em.setDataSource(dataSource);
-    em.setPackagesToScan("com.propertyvaluation.main.models");
-    em.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
-    em.setJpaProperties(hibernateProperties());
-    return em;
-  }
+    @Bean
+    @Autowired
+    public HibernateTransactionManager transactionManager(SessionFactory sessionFactory) {
+        HibernateTransactionManager txManager = new HibernateTransactionManager();
+        txManager.setSessionFactory(sessionFactory);
+        return txManager;
+    }
+
+    @Bean
+    public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
+        LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
+        em.setDataSource(dataSource);
+        em.setPackagesToScan("com.propertyvaluation.main.models");
+        em.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
+        em.setJpaProperties(hibernateProperties());
+        return em;
+    }
 }

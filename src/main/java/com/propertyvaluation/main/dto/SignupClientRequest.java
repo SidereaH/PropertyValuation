@@ -1,11 +1,11 @@
 package com.propertyvaluation.main.dto;
 
-import jakarta.persistence.Column;
 import lombok.Data;
 
 import java.time.LocalDate;
 @Data
-public class SignupRequest {
+public class SignupClientRequest {
+    private String username;
     private String lastName;
     private String firstName;
     private String middleName;

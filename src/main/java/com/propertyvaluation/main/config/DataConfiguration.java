@@ -10,17 +10,20 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class DataConfiguration {
-
   private SessionFactory sessionFactory = null;
+
+//    @Bean
+//    public SessionFactory sessionFactory() {
+//        return sessionFactory;
+//    }
 
   @Autowired
   public DataConfiguration(EntityManager entityManager) {
     Session session = entityManager.unwrap(org.hibernate.Session.class);
     sessionFactory = session.getSessionFactory();
   }
-
   @Bean
-  public DataAccessLayer dataAccessLayer() {
+  public DataAccessLayer dataAccessLayer(){
     return new DataAccessLayer(sessionFactory);
   }
 }

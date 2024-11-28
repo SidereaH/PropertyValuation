@@ -5,6 +5,7 @@ import com.propertyvaluation.main.models.*;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.propertyvaluation.main.models.Employees;
@@ -14,6 +15,7 @@ public class DataAccessLayer {
 
   private SessionFactory sessionFactory;
 
+  @Autowired
   public DataAccessLayer(SessionFactory sessionFactory) {
     this.sessionFactory = sessionFactory;
   }
@@ -132,7 +134,7 @@ public class DataAccessLayer {
     String name = user.getUsername();
 
     Query query = session
-        .createQuery("FROM Client where email = :username")
+        .createQuery("FROM Client where username = :username")
         .setParameter("username", name);
     Client userFrom = (Client) query.uniqueResult();
 
@@ -150,7 +152,7 @@ public class DataAccessLayer {
     session = sessionFactory.openSession();
     session.getTransaction().begin();
     Query query = session
-        .createQuery("FROM Client where email = :username")
+        .createQuery("FROM Client where username = :username")
         .setParameter("username", name);
     Client userFrom = (Client) query.uniqueResult();
     if (userFrom == null) {
@@ -202,26 +204,57 @@ public class DataAccessLayer {
     }
   }
 
-  public People getPeopleByMail(String mail) {
+  public Client getClientByUsername(String username) {
     Session session = sessionFactory.openSession();
+    session.getTransaction().begin();
     try {
-      Query<Employees> query = session.createNamedQuery("employees.findByEmailLike", Employees.class);
-      query.setParameter("email", "%" + mail + "%");
-      People people = query.uniqueResult();
-      if (people != null) {
-        return query.uniqueResult();
-      } else {
-        Query<Client> query2 = session.createNamedQuery("clients.findbyEmailLike", Client.class);
-        query.setParameter("email", "%" + mail + "%");
-        people = query2.uniqueResult();
-        return people;
-      }
+      Query query = session
+              .createQuery("FROM Client where username = :username")
+              .setParameter("username", username);
+        Client client = (Client) query.uniqueResult();
+        return client;
+
     } finally {
       if (session != null) {
         session.close();
       }
     }
-
+  }
+  public Boolean existsClientByUsername(String username) {
+    Session session = sessionFactory.openSession();
+    session.getTransaction().begin();
+    try {
+      Query<Client> query = session
+              .createQuery("FROM Client where username = :username", Client.class)
+              .setParameter("username", username);
+      Client client = (Client) query.uniqueResult();
+      if (client == null) {
+        return false;
+      }
+      return true;
+    } finally {
+      if (session != null) {
+        session.close();
+      }
+    }
+  }
+  public Boolean existsClientByEmail(String email) {
+    Session session = sessionFactory.openSession();
+    session.getTransaction().begin();
+    try {
+      Query<Client> query = session
+              .createQuery("FROM Client where email = :email", Client.class)
+              .setParameter("email", email);
+      Client client = (Client) query.uniqueResult();
+      if (client == null) {
+        return false;
+      }
+      return true;
+    } finally {
+      if (session != null) {
+        session.close();
+      }
+    }
   }
 
   public Client readClient(Long id) {
