@@ -7,6 +7,7 @@ import java.security.Security;
 import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.couchbase.CouchbaseProperties.Io;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -20,6 +21,7 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.http.HttpServletRequest;
 
 @Component
+@Slf4j
 public class TokenFilter extends OncePerRequestFilter {
   @Autowired
   private JwtCore jwtCore;
@@ -44,10 +46,14 @@ public class TokenFilter extends OncePerRequestFilter {
         catch(ExpiredJwtException e){
           //TODO
         }
-        if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+        if(username != null && SecurityContextHolder.getContext().getAuthentication() == null){
           userDetails = userDetailsService.loadUserByUsername(username);
-          auth = new UsernamePasswordAuthenticationToken(userDetails, null);
+          auth = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
           SecurityContextHolder.getContext().setAuthentication(auth);
+          log.info("Проверка токена: {}", jwt);
+          log.info("Имя пользователя из токена: {}", username);
+          log.info("Роли пользователя: {}", userDetails.getAuthorities());
+
         }
       }
     }

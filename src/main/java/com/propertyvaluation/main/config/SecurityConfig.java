@@ -50,6 +50,7 @@ public class SecurityConfig {
   @Primary
   public AuthenticationManagerBuilder configureAuthenticationManagerBuilder(AuthenticationManagerBuilder authenticationManagerBuilder) throws Exception{
     authenticationManagerBuilder.userDetailsService(clientService).passwordEncoder(passwordEncoder());
+
     return authenticationManagerBuilder;
   }
 
@@ -70,12 +71,12 @@ public class SecurityConfig {
                             new CorsConfiguration().applyPermitDefaultValues())
             )
             .exceptionHandling(exception -> exception
-                    .authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.CREATED)))
+                    .authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED)))
             .sessionManagement(session -> session
                     .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             )
           .authorizeHttpRequests(auth -> auth
-              .requestMatchers("/api/*", "/api/**", "/api")
+              .requestMatchers("/authorized/*")
               .fullyAuthenticated()
               .anyRequest().permitAll())
              .addFilterBefore(tokenFilter, UsernamePasswordAuthenticationFilter.class);

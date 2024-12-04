@@ -18,9 +18,11 @@ import com.propertyvaluation.main.models.Employees;
 import com.propertyvaluation.main.models.Position;
 import com.propertyvaluation.main.models.*;
 
+import java.security.Principal;
+
 @RestController
 // @CrossOrigin("http://localhost:8080/")
-@RequestMapping("/auth")
+@RequestMapping("/authorized")
 public class MainController {
   private final DataAccessLayer dataAccessLayer;
 
@@ -291,5 +293,12 @@ public class MainController {
   public ResponseEntity<Void> deletePropertyType(@PathVariable Long id) {
     dataAccessLayer.deletePropertyType(id);
     return ResponseEntity.ok().build();
+  }
+  @GetMapping("/user")
+  public String userAccess(Principal principal) {
+    if (principal != null) {
+      return principal.getName();
+    }
+    return null;
   }
 }

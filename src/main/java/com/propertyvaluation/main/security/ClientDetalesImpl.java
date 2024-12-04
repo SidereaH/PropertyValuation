@@ -15,6 +15,7 @@ import java.util.List;
 @AllArgsConstructor
 public class ClientDetalesImpl implements UserDetails {
     private Long id;
+    private String username;
     private String lastName;
     private String firstName;
     private String middleName;
@@ -27,6 +28,7 @@ public class ClientDetalesImpl implements UserDetails {
     public static ClientDetalesImpl build(Client user) {
         return new ClientDetalesImpl(
                 user.getPeopleId(),
+                user.getUsername(),
                 user.getLastName(),
                 user.getFirstName(),
                 user.getMiddleName(),
@@ -49,7 +51,7 @@ public class ClientDetalesImpl implements UserDetails {
 
     @Override
     public String getUsername() {
-        return email;
+        return username;
     }
 
     @Override
